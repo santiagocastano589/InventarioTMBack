@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {
-    getProducts,
+    getProductos,
     getProductById,
     createProduct,
     updateProduct,
@@ -10,8 +10,8 @@ const {
 
 
 
-router.get('/allProducts', getProducts);
-router.get('/producto/:id', getProductById);
+router.get('/allProducts', getProductos);
+router.get('/producto/:serial', getProductById);
 router.post('/', createProduct);
 router.put('/:id', updateProduct);
 router.delete('/:id', deleteProduct);
