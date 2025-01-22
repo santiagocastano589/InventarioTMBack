@@ -60,7 +60,7 @@ const createProduct = async (req, res) => {
 };
 
 const updateProduct = async (req, res) => {
-  const { id } = req.params;
+  const { serial } = req.params;
   const { nombre, descripcion, precio, cantidad, categoria_id, proveedor_id } = req.body;
   try {
     const result = await pool.query(
