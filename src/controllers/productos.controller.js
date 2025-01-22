@@ -8,8 +8,8 @@ const getProductos = async (req, res) => {
         ltrim(rtrim(p.descripcion)) descripcion, 
         p.precio, 
         p.cantidad, 
-        ltrim(rtrim(c.nombre)) AS categoria_nombre, 
-        ltrim(rtrim(pr.nombre)) AS proveedor_nombre
+        ltrim(rtrim(c.id)) AS categoria_id, 
+        ltrim(rtrim(pr.id)) AS proveedor_id
       FROM productos p
       LEFT JOIN categorias c ON p.categoria_id = c.id
       LEFT JOIN proveedores pr ON p.proveedor_id = pr.id
@@ -30,8 +30,8 @@ const getProductById = async (req, res) => {
         ltrim(rtrim(p.descripcion)) descripcion, 
         p.precio, 
         p.cantidad, 
-        ltrim(rtrim(c.nombre)) AS categoria_nombre, 
-        ltrim(rtrim(pr.nombre)) AS proveedor_nombre
+        ltrim(rtrim(c.id)) AS categoria_id, 
+        ltrim(rtrim(pr.id)) AS proveedor_id
       FROM productos p
       LEFT JOIN categorias c ON p.categoria_id = c.id
       LEFT JOIN proveedores pr ON p.proveedor_id = pr.id WHERE serial = $1`, [serial]); 
