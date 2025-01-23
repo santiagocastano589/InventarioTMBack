@@ -82,6 +82,43 @@ const updateProduct = async (req, res) => {
   }
 };
 
+
+
+const updateEstado = async (req, res) => {
+  const { serial } = req.params;
+  try {
+    const result = await pool.query(
+      'UPDATE productos SET estado = 0 WHERE serial = $1 RETURNING *',
+      [serial]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'Producto no encontrado' });
+    }
+    res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+const resetProduct = async (req, res) => {
+  const { serial } = req.params;
+  try {
+    const result = await pool.query(
+      'UPDATE productos SET estado = 1 WHERE serial = $1 RETURNING *',
+      [serial]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'Producto no encontrado' });
+    }
+    res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
+
+
 const deleteProduct = async (req, res) => {
   const { serial } = req.params;
   try {
@@ -100,5 +137,7 @@ module.exports = {
   getProductById,
   createProduct,
   updateProduct,
+  updateEstado,
   deleteProduct,
+  resetProduct,
 };
