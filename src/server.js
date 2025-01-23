@@ -15,7 +15,7 @@ app.use(cors());
 app.use(express.json());
 
 // Rutas
-app.use('/categorias', categoriasRoutes);
+app.use('/', categoriasRoutes);
 app.use('/', productosRoutes);
 app.use('/proveedores', proveedoresRoutes);
 app.use('/ordenCompras', ordenCompraRoutes);

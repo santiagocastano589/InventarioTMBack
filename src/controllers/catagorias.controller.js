@@ -1,13 +1,32 @@
 const pool = require('../db');
 
+
 const getCategorias = async (req, res) => {
   try {
-    const result = await pool.query('SELECT id, ltrim(rtrim(nombre)) nombre, ltrim(rtrim(descripcion)) descripcion FROM categorias');
-    res.json(result.rows);
+    const categorias = await pool.query(
+      'SELECT id, ltrim(rtrim(nombre)) nombre, ltrim(rtrim(descripcion)) descripcion FROM categorias'
+    );
+
+    const categoriasConProductos = await Promise.all(
+      categorias.rows.map(async (categoria) => {
+        const productos = await pool.query(
+          'SELECT serial, nombre, descripcion FROM productos WHERE categoria_id = $1',
+          [categoria.id]
+        );
+        return {
+          ...categoria,
+          productos: productos.rows,
+        };
+      })
+    );
+
+    res.json(categoriasConProductos);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
+
+
 
 const getCategoriaById = async (req, res) => { 
     const { id } = req.params;
