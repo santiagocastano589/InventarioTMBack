@@ -8,10 +8,12 @@ const {
     updateEstado,
     deleteProduct,
     resetProduct,
+    getAll,
 } = require('../controllers/productos.controller');
 
 
 
+router.get('/allP', getAll);
 router.get('/productos', getProductos);
 router.get('/producto/:serial', getProductById);
 router.post('/newProducto', createProduct);

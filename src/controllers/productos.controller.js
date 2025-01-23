@@ -1,5 +1,33 @@
 const pool = require('../db');
 
+
+
+const getAll = async (req, res) => {
+  try {
+    const result = await pool.query(`SELECT 
+        p.serial, 
+        ltrim(rtrim(p.nombre)) nombre, 
+        ltrim(rtrim(p.descripcion)) descripcion, 
+        p.precio, 
+        p.cantidad,
+        p.estado,
+        c.id AS categoria_id,
+        ltrim(rtrim(c.nombre)) AS categoria_nombre,
+        pr.id AS proveedor_id,
+        ltrim(rtrim(pr.nombre)) AS proveedor_nombre
+      FROM productos p
+      LEFT JOIN categorias c ON p.categoria_id = c.id
+      LEFT JOIN proveedores pr ON p.proveedor_id = pr.id
+    `);
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
+
+
 const getProductos = async (req, res) => {
   try {
     const result = await pool.query(`SELECT 
@@ -133,6 +161,7 @@ const deleteProduct = async (req, res) => {
 };
 
 module.exports = {
+  getAll,
   getProductos,
   getProductById,
   createProduct,
