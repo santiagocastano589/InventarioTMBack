@@ -10,10 +10,10 @@ const {
 
 
 
-router.get('/allProducts', getProductos);
+router.get('/productos', getProductos);
 router.get('/producto/:serial', getProductById);
-router.post('/', createProduct);
-router.put('/update/:serial', updateProduct);
-router.delete('/:id', deleteProduct);
+router.post('/newProducto', createProduct);
+router.put('/updateProducto/:serial', updateProduct);
+router.delete('/deleteProducto/:serial', deleteProduct);
 
 module.exports = router;
