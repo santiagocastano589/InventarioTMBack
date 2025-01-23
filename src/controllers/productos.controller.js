@@ -65,11 +65,11 @@ const createProduct = async (req, res) => {
 
 const updateProduct = async (req, res) => {
   const { serial } = req.params;
-  const { nombre, descripcion, precio, cantidad, categoria_id, proveedor_id } = req.body;
+  const { nombre, descripcion, precio, cantidad } = req.body;
   try {
     const result = await pool.query(
-      'UPDATE productos SET nombre = $1, descripcion = $2, precio = $3, cantidad = $4, categoria_id = $5, proveedor_id = $6 WHERE serial = $7 RETURNING *',
-      [nombre, descripcion, precio, cantidad, categoria_id, proveedor_id, serial]
+      'UPDATE productos SET nombre = $1, descripcion = $2, precio = $3, cantidad = $4 WHERE serial = $5 RETURNING *',
+      [nombre, descripcion, precio, cantidad, serial]
     );
     if (result.rows.length === 0) {
       return res.status(404).json({ message: 'Producto no encontrado' });
