@@ -9,11 +9,13 @@ const {
     deleteProduct,
     resetProduct,
     getAll,
+    getPapelera,
 } = require('../controllers/productos.controller');
 
 
 
 router.get('/allP', getAll);
+router.get('/papelera', getPapelera);
 router.get('/productos', getProductos);
 router.get('/producto/:serial', getProductById);
 router.post('/newProducto', createProduct);
