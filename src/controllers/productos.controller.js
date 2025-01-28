@@ -67,7 +67,7 @@ const getProductos = async (req, res) => {
         ltrim(rtrim(pr.nombre)) AS proveedor_nombre
       FROM productos p
       LEFT JOIN categorias c ON p.categoria_id = c.id
-      LEFT JOIN proveedores pr ON p.proveedor_id = pr.id WHERE p.estado = '1'
+      LEFT JOIN proveedores pr ON p.proveedor_id = pr.id WHERE p.estado = 1;
     `);
     res.json(result.rows);
   } catch (err) {
