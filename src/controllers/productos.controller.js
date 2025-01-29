@@ -1,7 +1,6 @@
 const pool = require('../db');
 
 
-
 const getPapelera = async (req, res) => {
   try {
     const result = await pool.query(`SELECT 
@@ -102,20 +101,32 @@ const getProductById = async (req, res) => {
     }
   };
   
+;
 
 const createProduct = async (req, res) => {
-  const { nombre, descripcion, precio, cantidad } = req.body;
+  const { serial, nombre, descripcion, precio, cantidad, categoria_id, proveedor_id } = req.body;
+
   try {
+    const existingProduct = await pool.query(
+      'SELECT * FROM productos WHERE serial = $1', [serial]
+    );
+
+    if (existingProduct.rows.length > 0) {
+      return res.status(400).json({ error: 'El serial ya está registrado.' });
+    }
+
     const result = await pool.query(
       `INSERT INTO productos (serial, nombre, descripcion, precio, cantidad, categoria_id, proveedor_id)
        VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
-      [nombre, descripcion, precio, cantidad, categoria_id, proveedor_id]
+      [serial, nombre, descripcion, precio, cantidad, categoria_id, proveedor_id]
     );
+
     res.status(201).json(result.rows[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
+
 
 const updateProduct = async (req, res) => {
   const { serial } = req.params;

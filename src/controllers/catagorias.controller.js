@@ -4,13 +4,13 @@ const pool = require('../db');
 const getCategorias = async (req, res) => {
   try {
     const categorias = await pool.query(
-      'SELECT id, ltrim(rtrim(nombre)) nombre, ltrim(rtrim(descripcion)) descripcion FROM categorias'
+      'SELECT id, ltrim(rtrim(nombre)) nombre, ltrim(rtrim(descripcion)) descripcion, estado FROM categorias where estado = 1'
     );
 
     const categoriasConProductos = await Promise.all(
       categorias.rows.map(async (categoria) => {
         const productos = await pool.query(
-          'SELECT serial, nombre, descripcion FROM productos WHERE categoria_id = $1',
+          'SELECT serial, ltrim(rtrim(nombre)) nombre, ltrim(rtrim(descripcion)) descripcion FROM productos WHERE categoria_id = $1',
           [categoria.id]
         );
         return {
@@ -72,14 +72,18 @@ const updateCategoria = async (req, res) => {
   }
 };
 
-const deleteCategoria = async (req, res) => {
+
+const updateCategoryState = async (req, res) => {
   const { id } = req.params;
   try {
-    const result = await pool.query('DELETE FROM categorias WHERE id = $1 RETURNING *', [id]);
+    const result = await pool.query(
+      'UPDATE categorias SET estado = 0 WHERE id = $1',
+      [id]
+    );
     if (result.rows.length === 0) {
       return res.status(404).json({ message: 'Categoría no encontrada' });
     }
-    res.json({ message: 'Categoría eliminada correctamente' });
+    res.json(result.rows[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -90,5 +94,5 @@ module.exports = {
   getCategoriaById,
   createCategoria,
   updateCategoria,
-  deleteCategoria,
+  updateCategoryState,
 };
