@@ -57,11 +57,11 @@ const updateProvider = async (req, res) => {
 const deleteProvider = async (req, res) => {
   const { id } = req.params;
   try {
-    const result = await pool.query('DELETE FROM categorias WHERE id = $1 RETURNING *', [id]);
+    const result = await pool.query('DELETE FROM proveedores WHERE id = $1 RETURNING *', [id]);
     if (result.rows.length === 0) {
-      return res.status(404).json({ message: 'Categoría no encontrada' });
+      return res.status(404).json({ message: 'Proveedor no encontrad' });
     }
-    res.json({ message: 'Categoría eliminada correctamente' });
+    res.json({ message: 'Proveedor eliminado correctamente' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

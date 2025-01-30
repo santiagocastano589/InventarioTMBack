@@ -14,6 +14,6 @@ router.get('/allProveedores', getProviders);
 router.get('/proveedor/:id', getProviderById);
 router.post('/newProvider', createProvider);
 router.put('/updateProvider/:id', updateProvider);
-router.delete('/:id', deleteProvider);
+router.delete('/deleteProvider/:id', deleteProvider);
 
 module.exports = router;
