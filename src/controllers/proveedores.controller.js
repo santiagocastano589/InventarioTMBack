@@ -2,17 +2,18 @@ const pool = require('../db');
 
 const getProviders = async (req, res) => {
   try {
-    const result = await pool.query('SELECT id, ltrim(rtrim(nombre)) nombre, ltrim(rtrim(contacto)) contacto, ltrim(rtrim(telefono)) telefono, ltrim(rtrim(direccion)) direccion FROM proveedores');
+    const result = await pool.query('SELECT id, ltrim(rtrim(nombre)) nombre, ltrim(rtrim(contacto)) contacto, ltrim(rtrim(telefono)) telefono, ltrim(rtrim(direccion)) direccion, ltrim(rtrim(descripcion)) descripcion FROM proveedores');
     res.json(result.rows);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
+
 const getProviderById = async (req, res) => { 
     const { id } = req.params;
     try {
-      const result = await pool.query('SELECT id, ltrim(rtrim(nombre)) nombre, ltrim(rtrim(contacto)) contacto, ltrim(rtrim(telefono)) telefono, ltrim(rtrim(direccion)) direccion FROM proveedores WHERE id = $1', [id]); 
+      const result = await pool.query('SELECT id, ltrim(rtrim(nombre)) nombre, ltrim(rtrim(contacto)) contacto, ltrim(rtrim(telefono)) telefono, ltrim(rtrim(direccion)) direccion, ltrim(rtrim(descripcion)) descripcion FROM proveedores WHERE id = $1', [id]); 
       if (result.rows.length === 0) {
         return res.status(404).json({ message: 'Categoría no encontrada' });
       }
@@ -24,11 +25,11 @@ const getProviderById = async (req, res) => {
   
 
 const createProvider = async (req, res) => {
-  const { nombre, descripcion } = req.body;
+  const { nombre, descripcion, contacto, telefono, direccion } = req.body;
   try {
     const result = await pool.query(
-      'INSERT INTO categorias (nombre, descripcion) VALUES ($1, $2) RETURNING *',
-      [nombre, descripcion]
+      'INSERT INTO proveedores (nombre, descripcion, contacto, telefono, direccion) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+      [nombre, descripcion, contacto, telefono, direccion]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
@@ -38,14 +39,14 @@ const createProvider = async (req, res) => {
 
 const updateProvider = async (req, res) => {
   const { id } = req.params;
-  const { nombre, descripcion } = req.body;
+  const { nombre, descripcion, contacto, telefono, direccion } = req.body;
   try {
     const result = await pool.query(
-      'UPDATE categorias SET nombre = $1, descripcion = $2 WHERE id = $3 RETURNING *',
-      [nombre, descripcion, id]
+      'UPDATE proveedores SET nombre = $1, descripcion = $2, contacto = $3, telefono = $4, direccion = $5 WHERE id = $6 RETURNING *',
+      [nombre, descripcion, contacto, telefono, direccion, id]
     );
     if (result.rows.length === 0) {
-      return res.status(404).json({ message: 'Categoría no encontrada' });
+      return res.status(404).json({ message: 'Proveedor no encontrado' });
     }
     res.json(result.rows[0]);
   } catch (err) {

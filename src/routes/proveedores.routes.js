@@ -13,7 +13,7 @@ const {
 router.get('/allProveedores', getProviders);
 router.get('/proveedor/:id', getProviderById);
 router.post('/', createProvider);
-router.put('/:id', updateProvider);
+router.put('/updateProvider/:id', updateProvider);
 router.delete('/:id', deleteProvider);
 
 module.exports = router;

@@ -17,7 +17,7 @@ app.use(express.json());
 // Rutas
 app.use('/', categoriasRoutes);
 app.use('/', productosRoutes);
-app.use('/proveedores', proveedoresRoutes);
+app.use('/', proveedoresRoutes);
 app.use('/ordenCompras', ordenCompraRoutes);
 app.use('/ventas', ventasRoutes);
 
