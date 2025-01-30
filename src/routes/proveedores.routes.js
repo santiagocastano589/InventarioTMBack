@@ -12,7 +12,7 @@ const {
 
 router.get('/allProveedores', getProviders);
 router.get('/proveedor/:id', getProviderById);
-router.post('/', createProvider);
+router.post('/newProvider', createProvider);
 router.put('/updateProvider/:id', updateProvider);
 router.delete('/:id', deleteProvider);
 
